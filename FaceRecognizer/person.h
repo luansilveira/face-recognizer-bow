@@ -25,6 +25,8 @@ public:
     std::string getName();
     void setName(const std::string &name);
 
+    void getImages(std::vector<cv::Mat> &images);
+
 private:
     std::vector< cv::Mat> images_;
     int id_;

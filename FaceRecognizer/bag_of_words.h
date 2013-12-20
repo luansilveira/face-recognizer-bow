@@ -7,6 +7,8 @@
 
 #include <ros/ros.h>
 
+#include <people.h>
+
 //! Vector Include
 #include <vector>
 
@@ -28,8 +30,14 @@ public:
     int getThreshold();
 
 
+    void setNumberOfGroups(int number_of_groups);
+
+    void train(People *people);
+
 private:
     int threshold_;
+    int number_of_groups_;
+
     cv::Mat dictionary_;
     cv::Mat histogram_;
 

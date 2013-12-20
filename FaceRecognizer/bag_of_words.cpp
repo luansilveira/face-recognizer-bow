@@ -23,6 +23,9 @@ BoW::BoW()
     bowDE_ = new cv::BOWImgDescriptorExtractor(extractor_,matcher_);
 }
 
+
+
+
 /*!
  * \brief Destructor
  */
@@ -46,6 +49,11 @@ void BoW::setThreshold(int threshold)
     delete detector_;
     //! Set threshold value at the SURF detector
     detector_ = new cv::SurfFeatureDetector(threshold_);
+}
+
+void BoW::setNumberOfGroups(int number_of_groups)
+{
+    number_of_groups_ = number_of_groups;
 }
 
 /*!
@@ -73,6 +81,65 @@ cv::Mat BoW::createHistogram(const cv::Mat &image)
     //! Return histogram
     return histogram_;
 }
+
+
+void BoW::train(std::vector <cv::Mat> &images)
+{
+
+    TermCriteria tc(CV_TERMCRIT_EPS+CV_TERMCRIT_ITER,10,1.0);
+    int retries = 1;
+    int flags = KMEANS_PP_CENTERS;
+
+    std::vector<cv::KeyPoint> keypoints;
+
+
+    /// DICIONARIOS DE TAMANHO: SE NECESSARIO PODEM CRIAR OUTROS, LEMBRAR DE ADICIONAR NOVA CLASSE BOWKMeansTrainer E TAMBÉM USAR O MÉTODO .cluster, ALÉM DE SALVAR O DICIONARIO NO FILESTORAGE
+    cv::BOWKMeansTrainer bowTrainer(number_of_groups_, tc, retries, flags);
+
+    cv::Mat features_image;
+
+    BOOST_FOREACH(cv::Mat image, images)
+    {
+        detector_.detect(image, keypoints);
+        extractor_.compute(image, keypoints, features_image);
+
+        if(!features_image.empty()){
+            bowTrainer.add(features_image);
+        }
+    }
+
+
+    dictionary_ = bowTrainer.cluster();
+
+
+
+
+}
+
+cv::Mat BoW::computeMeanHistogram(std::vector <cv::Mat> images)
+{
+    std::vector <cv::Mat> histograms;
+    cv::Mat mean_histogram;
+
+
+    BOOST_FOREACH(cv::Mat image, images)
+    {
+        histograms.push_back(createHistogram());
+    }
+
+    mean_histogram = histograms[0];
+
+    std::fill(mean_histogram.begin,mean_histogram.end,0);
+
+    BOOST_FOREACH(cv::Mat hist, histograms)
+    {
+        mean_histogram += hist;
+    }
+    mean_histogram /= histograms.size();
+
+    return mean_histogram;
+}
+
 
 /*!
  * \brief Read the BoW's Dictionary

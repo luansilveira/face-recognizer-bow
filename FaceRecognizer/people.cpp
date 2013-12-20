@@ -14,6 +14,19 @@ void People::getNames(std::vector<std::string> &names)
     }
 }
 
+void People::getImages(std::vector<cv::Mat> &images)
+{
+    std::vector <cv::Mat> images_aux;
+
+    BOOST_FOREACH(Person p, people)
+    {
+        images_aux.clear();
+        p.getImages(images_aux);
+        std::copy(images_aux.begin(),images_aux.end(),images.end());
+    }
+
+}
+
 int People::addNewPerson(std::string name)
 {
     int new_id = people.size();

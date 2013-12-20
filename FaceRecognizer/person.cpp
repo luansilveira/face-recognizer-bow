@@ -83,3 +83,8 @@ void Person::setName(const std::string &name)
 {
     name_ = name;
 }
+
+void Person::getImages(std::vector<cv::Mat> &images)
+{
+    std::copy(images_.begin(),images_.end(),images.begin());
+}
