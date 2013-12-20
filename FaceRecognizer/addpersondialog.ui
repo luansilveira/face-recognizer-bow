@@ -19,28 +19,18 @@
      <x>10</x>
      <y>10</y>
      <width>380</width>
-     <height>210</height>
+     <height>213</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
-    <item row="6" column="2">
-     <widget class="QSpinBox" name="spinBox">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="1">
-     <widget class="QLabel" name="label_name_1">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
+    <item row="1" column="0" rowspan="2">
+     <widget class="QRadioButton" name="new_person">
       <property name="text">
-       <string>Name :</string>
+       <string>New Person</string>
       </property>
      </widget>
     </item>
-    <item row="4" column="2" rowspan="2">
+    <item row="2" column="2">
      <widget class="QLineEdit" name="name_new_person">
       <property name="enabled">
        <bool>false</bool>
@@ -60,33 +50,6 @@
       </property>
      </widget>
     </item>
-    <item row="3" column="1" colspan="2">
-     <widget class="QLabel" name="label_existing_person">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="text">
-       <string>Put the name or ID of the person</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="0" colspan="3">
-     <widget class="QPushButton" name="selectImagesButton">
-      <property name="text">
-       <string>Select Images</string>
-      </property>
-     </widget>
-    </item>
-    <item row="6" column="1">
-     <widget class="QLabel" name="label_3">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="text">
-       <string>ID:</string>
-      </property>
-     </widget>
-    </item>
     <item row="3" column="0" rowspan="4">
      <widget class="QRadioButton" name="radioButton_2">
       <property name="text">
@@ -94,18 +57,8 @@
       </property>
      </widget>
     </item>
-    <item row="2" column="2">
-     <widget class="QLineEdit" name="lineEdit_2">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-    </item>
-    <item row="4" column="1" rowspan="2">
-     <widget class="QLabel" name="label_2">
+    <item row="2" column="1">
+     <widget class="QLabel" name="label_name_1">
       <property name="enabled">
        <bool>false</bool>
       </property>
@@ -124,12 +77,35 @@
       </property>
      </widget>
     </item>
-    <item row="1" column="0" rowspan="2">
-     <widget class="QRadioButton" name="new_person">
+    <item row="3" column="1" colspan="2">
+     <widget class="QLabel" name="label_existing_person">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="text">
-       <string>New Person</string>
+       <string>Put the name of the person</string>
       </property>
      </widget>
+    </item>
+    <item row="0" column="0" colspan="3">
+     <widget class="QPushButton" name="selectImagesButton">
+      <property name="text">
+       <string>Select Images</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="1" rowspan="2">
+     <widget class="QLabel" name="label_2">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string>Name :</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="2" rowspan="2">
+     <widget class="QComboBox" name="existingNames"/>
     </item>
    </layout>
   </widget>
@@ -203,7 +179,7 @@
   <connection>
    <sender>new_person</sender>
    <signal>toggled(bool)</signal>
-   <receiver>lineEdit_2</receiver>
+   <receiver>name_new_person</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -251,48 +227,16 @@
   <connection>
    <sender>radioButton_2</sender>
    <signal>toggled(bool)</signal>
-   <receiver>name_new_person</receiver>
+   <receiver>existingNames</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>113</x>
-     <y>142</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>234</x>
-     <y>138</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>radioButton_2</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>label_3</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>127</x>
+     <x>40</x>
      <y>152</y>
     </hint>
     <hint type="destinationlabel">
-     <x>147</x>
-     <y>179</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>radioButton_2</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>spinBox</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>79</x>
+     <x>231</x>
      <y>148</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>220</x>
-     <y>176</y>
     </hint>
    </hints>
   </connection>

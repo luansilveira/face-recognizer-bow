@@ -14,10 +14,19 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    addpersondialog.cpp
+    addpersondialog.cpp \
+    person.cpp \
+    people.cpp \
+    bag_of_words.cpp
 
 HEADERS  += mainwindow.h \
-    addpersondialog.h
+    addpersondialog.h \
+    person.h \
+    people.h \
+    bag_of_words.h
 
 FORMS    += mainwindow.ui \
     addpersondialog.ui
+
+LIBS += `pkg-config --libs opencv`
+

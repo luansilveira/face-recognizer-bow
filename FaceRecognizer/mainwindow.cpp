@@ -15,29 +15,37 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::loadImages(QStringList &filenames)
-{
-
-}
 
 void MainWindow::on_addNewPerson_clicked()
 {
     AddPersonDialog addPersonDialog(this);
+    int id;
+
+    std::vector<std::string> names;
+    people.getNames(names);
+    addPersonDialog.setExistingNames(names);
 
     if (addPersonDialog.exec())
     {
         QStringList filenames = addPersonDialog.getFilenames();
-        loadImages(filenames);
-        //Adiciona a pessoa ao banco de dados
 
-        foreach (QString filename, filenames) {
-            ui->log->append("Adicionou a imagem " + filename);
+        if(addPersonDialog.isNewPerson())
+        {
+            id = people.addNewPerson(addPersonDialog.getName());
+            ui->log->append("Person created. Name = " + QString::fromStdString(addPersonDialog.getName()));
         }
-
+        else
+        {
+            id = addPersonDialog.getID();
+        }
+        foreach (QString filename, filenames) {
+            people.addImage(id,filename.toStdString());
+            ui->log->append("Image " + filename + " added");
+        }
     }
     else
     {
-        ui->log->append("Nenhuma Imagem selecionada");
+        ui->log->append("No image selected");
     }
 
 

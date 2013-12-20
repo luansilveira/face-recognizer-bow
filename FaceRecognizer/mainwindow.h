@@ -5,6 +5,7 @@
 #include <QFileDialog>
 #include <iostream>
 #include <addpersondialog.h>
+#include "people.h"
 
 namespace Ui {
 class MainWindow;
@@ -18,13 +19,14 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     
-    void loadImages(QStringList &filenames);
 private slots:
 
     void on_addNewPerson_clicked();
 
 private:
     Ui::MainWindow *ui;
+
+    People people;
 };
 
 #endif // MAINWINDOW_H
