@@ -18,20 +18,20 @@
     <property name="geometry">
      <rect>
       <x>310</x>
-      <y>100</y>
+      <y>60</y>
       <width>181</width>
       <height>23</height>
      </rect>
     </property>
     <property name="text">
-     <string>Add New Person</string>
+     <string>Add New Person or Images</string>
     </property>
    </widget>
    <widget class="QPushButton" name="loadDatabase">
     <property name="geometry">
      <rect>
       <x>40</x>
-      <y>100</y>
+      <y>50</y>
       <width>181</width>
       <height>23</height>
      </rect>
@@ -70,6 +70,58 @@
     </property>
     <property name="layoutDirection">
      <enum>Qt::LeftToRight</enum>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="testImages">
+    <property name="geometry">
+     <rect>
+      <x>310</x>
+      <y>140</y>
+      <width>181</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Test Images</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="storeDatabase">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>80</y>
+      <width>181</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>StoreDatabase</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="addTestImages">
+    <property name="geometry">
+     <rect>
+      <x>310</x>
+      <y>100</y>
+      <width>181</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Add Test Images</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="showDatabase">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>110</y>
+      <width>181</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Show Database</string>
     </property>
    </widget>
   </widget>

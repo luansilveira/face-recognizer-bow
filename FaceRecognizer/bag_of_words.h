@@ -5,17 +5,14 @@
 #include <opencv2/nonfree/features2d.hpp>
 #include <opencv2/opencv.hpp>
 
-#include <ros/ros.h>
-
-#include <people.h>
+#include <boost/foreach.hpp>
 
 //! Vector Include
 #include <vector>
 
 using namespace std;
 
-namespace dolphin_slam
-{
+
 
 class BoW
 {
@@ -32,7 +29,12 @@ public:
 
     void setNumberOfGroups(int number_of_groups);
 
-    void train(People *people);
+    void train(std::vector<cv::Mat> &images);
+
+    cv::Mat computeMeanHistogram(std::vector<cv::Mat> images);
+
+    void write(cv::FileStorage &fs) const;
+    void read(const cv::FileNode& node);                          //Read serialization for this class
 
 private:
     int threshold_;
@@ -50,6 +52,12 @@ private:
 
 };
 
-} // namespace
+
+//These write and read functions must be defined for the serialization in FileStorage to work
+void write(cv::FileStorage& fs, const std::string&, const BoW& x);
+void read(const cv::FileNode& node, BoW& x, const BoW& default_value = BoW());
+
+
+
 
 #endif // BOW_H

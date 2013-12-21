@@ -1,7 +1,5 @@
 #include "bag_of_words.h"
 
-namespace dolphin_slam
-{
 
 /*!
  * \brief Constructor
@@ -10,6 +8,9 @@ BoW::BoW()
 {
 
     threshold_ = 100;
+
+    number_of_groups_ = 100;
+
     //! create FlannBased matcher
     matcher_ = cv::DescriptorMatcher::create("FlannBased");
 
@@ -73,22 +74,27 @@ int BoW::getThreshold()
  */
 cv::Mat BoW::createHistogram(const cv::Mat &image)
 {
+    cv::Mat image_keypoints;
+    cv::Mat histogram;
     //! Detect SURF Features in the image
     detector_->detect(image, keypts_);
+
     //! Create the Image's Histogram
-    bowDE_->compute(image,keypts_,histogram_);
+    bowDE_->compute(image,keypts_,histogram);
+
+    cv::drawKeypoints( image, keypts_, image_keypoints, cv::Scalar::all(-1), cv::DrawMatchesFlags::DEFAULT );
 
     //! Return histogram
-    return histogram_;
+    return histogram;
 }
 
 
 void BoW::train(std::vector <cv::Mat> &images)
 {
 
-    TermCriteria tc(CV_TERMCRIT_EPS+CV_TERMCRIT_ITER,10,1.0);
+    cv::TermCriteria tc(CV_TERMCRIT_EPS+CV_TERMCRIT_ITER,10,1.0);
     int retries = 1;
-    int flags = KMEANS_PP_CENTERS;
+    int flags = cv::KMEANS_PP_CENTERS;
 
     std::vector<cv::KeyPoint> keypoints;
 
@@ -100,19 +106,24 @@ void BoW::train(std::vector <cv::Mat> &images)
 
     BOOST_FOREACH(cv::Mat image, images)
     {
-        detector_.detect(image, keypoints);
-        extractor_.compute(image, keypoints, features_image);
+        //cv::imshow("Image",image);
+        //cv::waitKey(250);
+        detector_->detect(image, keypoints);
+        extractor_->compute(image, keypoints, features_image);
 
         if(!features_image.empty()){
             bowTrainer.add(features_image);
+        }
+        else
+        {
+            cout << "features_image empty" << endl;
         }
     }
 
 
     dictionary_ = bowTrainer.cluster();
 
-
-
+    bowDE_->setVocabulary(dictionary_);
 
 }
 
@@ -124,16 +135,16 @@ cv::Mat BoW::computeMeanHistogram(std::vector <cv::Mat> images)
 
     BOOST_FOREACH(cv::Mat image, images)
     {
-        histograms.push_back(createHistogram());
-    }
+        histograms.push_back(createHistogram(image));
 
-    mean_histogram = histograms[0];
+   }
 
-    std::fill(mean_histogram.begin,mean_histogram.end,0);
+    mean_histogram = histograms[0].clone();
 
-    BOOST_FOREACH(cv::Mat hist, histograms)
+
+    for(int i=1;i<histograms.size();i++)
     {
-        mean_histogram += hist;
+        mean_histogram += histograms[i];
     }
     mean_histogram /= histograms.size();
 
@@ -153,11 +164,11 @@ void BoW::readDictionary(const char* path)
     //! Open File especified in the path
     if(fs.open(path, cv::FileStorage::READ))
     {
-        ROS_DEBUG_STREAM("File sucessful opened: " << path);
+        cout <<"File sucessful opened: " << path << endl;
     }
     else
     {
-        ROS_WARN_STREAM("Could not open the file: " << path);
+        cout <<"Could not open the file: " << path << endl;
     }
 
     //! Read the dictionary from File
@@ -169,4 +180,39 @@ void BoW::readDictionary(const char* path)
     bowDE_->setVocabulary(dictionary_);
 }
 
-} // namespace
+
+//! Write serialization for this class
+void BoW::write(cv::FileStorage& fs) const{
+
+    fs << "{";
+    fs << "number_of_groups" << number_of_groups_;
+    fs << "features_threshold" << threshold_;
+    fs << "dictionary" << dictionary_;
+    fs << "}";
+
+}
+
+void BoW::read(const cv::FileNode &node)
+{
+    node["number_of_groups"] >> number_of_groups_;
+    node["features_threshold"] >> threshold_;
+
+    node["dictionary"] >> dictionary_;
+
+    bowDE_->setVocabulary(dictionary_);
+    setThreshold(threshold_);
+
+}
+
+
+//These write and read functions must be defined for the serialization in FileStorage to work
+void write(cv::FileStorage& fs, const std::string&, const BoW& bow)
+{
+    bow.write(fs);
+}
+
+void read(const cv::FileNode& node, BoW& bow, const BoW& default_value)
+{
+    bow.read(node);
+}
+

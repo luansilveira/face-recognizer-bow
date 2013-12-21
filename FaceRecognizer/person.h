@@ -27,7 +27,14 @@ public:
 
     void getImages(std::vector<cv::Mat> &images);
 
+    void showImages();
+
+    void setMeanHistogram(cv::Mat &histogram);
+
+    cv::Mat getMeanHistogram();
+
 private:
+    cv::Mat mean_histogram_;
     std::vector< cv::Mat> images_;
     int id_;
     std::string name_;

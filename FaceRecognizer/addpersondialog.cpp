@@ -19,8 +19,8 @@ void AddPersonDialog::on_selectImagesButton_clicked()
     filenames_ = QFileDialog::getOpenFileNames(
                             this,
                             "Select one or more files to open",
-                            "/home",
-                            "Images (*.png *.xpm *.jpg)");
+                            "/home/lsilveira/Codigos/face-recognizer-bow/FaceRecognizer/Datasets",
+                            "Images (*.png *.xpm *.jpg *.gif *.pgm)");
 
 }
 
